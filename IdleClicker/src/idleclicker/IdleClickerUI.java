@@ -12,7 +12,7 @@ import javax.swing.SwingWorker;
 
 /**
  *
- * @author andre
+ * @author BelowAverageCoder
  */
 public class IdleClickerUI extends javax.swing.JFrame {
 
