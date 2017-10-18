@@ -12,7 +12,7 @@ import javax.swing.SwingWorker;
 
 /**
  *
- * @author BelowAverageCoder
+ * @author andre
  */
 public class IdleClickerUI extends javax.swing.JFrame {
 
@@ -39,6 +39,7 @@ public class IdleClickerUI extends javax.swing.JFrame {
     int level3 = 0;
     int cooldown1 = 30;
     boolean forward = true;
+    int reset = 0;
 
 
     /**
@@ -50,7 +51,12 @@ public class IdleClickerUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrame1 = new javax.swing.JFrame();
+        jLabel2 = new javax.swing.JLabel();
+        yes = new javax.swing.JButton();
+        no = new javax.swing.JButton();
         Exit = new javax.swing.JButton();
+        Reset = new javax.swing.JButton();
         Click = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         Amount = new javax.swing.JLabel();
@@ -75,12 +81,69 @@ public class IdleClickerUI extends javax.swing.JFrame {
         cost3Label = new javax.swing.JLabel();
         level3Label = new javax.swing.JLabel();
 
+        jFrame1.setPreferredSize(new java.awt.Dimension(1366, 768));
+        jFrame1.setSize(new java.awt.Dimension(1366, 768));
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Are you sure?");
+
+        yes.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        yes.setText("Yes");
+        yes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yesActionPerformed(evt);
+            }
+        });
+
+        no.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        no.setText("No");
+        no.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(yes)
+                .addGap(60, 60, 60)
+                .addComponent(no)
+                .addGap(581, 581, 581))
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addContainerGap(343, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yes)
+                    .addComponent(no))
+                .addGap(318, 318, 318))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Exit.setText("Exit");
         Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ExitActionPerformed(evt);
+            }
+        });
+
+        Reset.setText("Reset");
+        Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetActionPerformed(evt);
             }
         });
 
@@ -193,8 +256,13 @@ public class IdleClickerUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Exit)
-                        .addGap(578, 578, 578)
-                        .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(578, 578, 578)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(Reset))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -290,7 +358,9 @@ public class IdleClickerUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 259, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(Exit)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Exit)
+                            .addComponent(Reset))
                         .addContainerGap())
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
@@ -316,8 +386,7 @@ public class IdleClickerUI extends javax.swing.JFrame {
             cost1Label.setText("Cost: " + String.valueOf(cost1));
             Amount.setText(String.valueOf(count));
             
-            String click = Integer.toString(worth);
-            Click.setLabel("+" + click);
+            Click.setLabel("+" + Integer.toString(worth));
             
             level1 += 1;
             level1Label.setText("Current Level: " + String.valueOf(level1));
@@ -330,36 +399,44 @@ public class IdleClickerUI extends javax.swing.JFrame {
         protected Void doInBackground() throws Exception {
         // Simulate doing something useful.
         if(cooldown1 == 30)
+            {
+                for(int seconds = 0; seconds < 10; seconds++)
+                {
+                    if(reset == 1)
+                        break;
+                    for(int auto = 0; auto < 5; auto++)
                     {
-                        for(int seconds = 0; seconds < 10; seconds++)
-                        {
-                            for(int auto = 0; auto < 5; auto++)
-                            {
-                                count += worth;
-                                Amount.setText(String.valueOf(count));
-                                try {
-                                    Thread.sleep(200);
-                                } catch (InterruptedException ex) {
-                                    Logger.getLogger(IdleClickerUI.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                            cooldown1--;
-                            cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
+                        if(reset == 1)
+                            break;
+                        count += worth;
+                        Amount.setText(String.valueOf(count));
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(IdleClickerUI.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        for(int seconds = 10; seconds < 30; seconds++)
-                        {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(IdleClickerUI.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                            cooldown1--;
-                            cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
-                        }
-                        cooldown1 = 30;
-                        cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
                     }
+                    if(reset == 1)
+                        break;
+                    cooldown1--;
+                    cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
+                }
+                for(int seconds = 10; seconds < 30; seconds++)
+                {
+                    if(reset == 1)
+                        break;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(IdleClickerUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    cooldown1--;
+                    cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
+                }
+                cooldown1 = 30;
+                cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
+            }
                 
 
         return null;
@@ -409,6 +486,57 @@ public class IdleClickerUI extends javax.swing.JFrame {
             CPS.setText("CPS: " + String.valueOf(cps2));
         }
     }//GEN-LAST:event_buy3ActionPerformed
+
+    private void yesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesActionPerformed
+    for(int i = 0; i < 10; i++)
+    {
+        reset = 1;
+        try {
+            Thread.sleep(9);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(IdleClickerUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    count = 0;
+    Amount.setText(String.valueOf(count));
+    count2 = 0;
+    cost1 = 100;
+    cost1Label.setText("Cost: " + String.valueOf(cost1));
+    cost2 = 5;
+    cost2Label.setText("Cost: " + String.valueOf(cost2));
+    cost3 = 25;
+    cost3Label.setText("Cost: " + String.valueOf(cost3));
+    cps = 0;
+    cps2 = 0;
+    CPS.setText("CPS: " + String.valueOf(cps2));
+    worth = 1;
+    Click.setLabel("+" + Integer.toString(worth));
+    level1 = 0;
+    level1Label.setText("Current Level: " + String.valueOf(level1));
+    level2 = 0;
+    level2Label.setText("Current Level: " + String.valueOf(level2));
+    level3 = 0;
+    level3Label.setText("Current Level: " + String.valueOf(level3));
+    cooldown1 = 30;
+    cooldown1Label.setText("Cooldown: " + String.valueOf(cooldown1) + "s");
+    forward = true;
+    
+    jFrame1.setVisible(false);
+    this.setVisible(true);
+    
+    reset = 0;
+    }//GEN-LAST:event_yesActionPerformed
+
+    private void noActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noActionPerformed
+        jFrame1.setVisible(false);
+        this.setVisible(true);
+    }//GEN-LAST:event_noActionPerformed
+
+    private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
+        jFrame1.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_ResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -551,6 +679,7 @@ public class IdleClickerUI extends javax.swing.JFrame {
     private javax.swing.JLabel CPS;
     private javax.swing.JButton Click;
     private javax.swing.JButton Exit;
+    private javax.swing.JButton Reset;
     private javax.swing.JButton autoclick;
     private javax.swing.JLabel autoclickDesc;
     private javax.swing.JButton buy1;
@@ -564,12 +693,16 @@ public class IdleClickerUI extends javax.swing.JFrame {
     private javax.swing.JLabel desc2;
     private javax.swing.JLabel desc3;
     private javax.swing.JButton jButton1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel level1Label;
     private javax.swing.JLabel level2Label;
     private javax.swing.JLabel level3Label;
     private javax.swing.JLabel name1;
     private javax.swing.JLabel name2;
     private javax.swing.JLabel name3;
+    private javax.swing.JButton no;
     private javax.swing.JLabel shopLabel;
+    private javax.swing.JButton yes;
     // End of variables declaration//GEN-END:variables
 }
